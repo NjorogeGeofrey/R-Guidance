@@ -1,0 +1,94 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+## Data Visualizations in R
+
+### 1. Introduction to Data Visualizations
+Purpose of data visualizations: to summarize, explore, and present data in a visually intuitive way.
+Types of visualizations: histograms, boxplots, pie charts, bar charts, scatter plots.
+We will use the mtcars dataset as our base for all demonstrations.
+
+
+### Visualizations in Base R
+#### a. Histogram: Distribution of Miles per Gallon (MPG)
+```{r}
+hist(mtcars$mpg, col = "blue", main = "Histogram of MPG", xlab = "Miles per Gallon", ylab = "Frequency")
+
+```
+Interpretation:
+Shows the distribution of mpg. Most cars fall between 15 and 20 MPG.
+
+#### b. Boxplot: MPG by Number of Cylinders
+```{r}
+boxplot(mpg ~ cyl, data = mtcars, col = "lightblue", main = "MPG by Number of Cylinders", xlab = "Cylinders", ylab = "Miles per Gallon")
+
+```
+Interpretation:
+
+Higher mpg for 4-cylinder cars compared to 6- and 8-cylinder cars.
+
+### c. Pie Chart: Proportion of Cars by Number of Cylinders
+```{r}
+cylinders_count <- table(mtcars$cyl)
+pie(cylinders_count, main = "Proportion of Cars by Number of Cylinders", col = c("lightblue", "lightgreen", "lightpink"))
+
+```
+### d. Bar Chart: Frequency of Cars by Number of Gears
+```{r}
+gear_count <- table(mtcars$gear)
+barplot(gear_count, col = "blue", main = "Frequency of Cars by Number of Gears", xlab = "Number of Gears", ylab = "Count")
+
+```
+### e. Scatter Plot: Relationship between Weight and MPG
+```{r}
+plot(mtcars$wt, mtcars$mpg, main = "Scatter Plot of Weight vs MPG", xlab = "Weight (1000 lbs)", ylab = "Miles per Gallon", col = "blue")
+
+```
+Negative correlation between weight and MPG. Heavier cars have lower MPG.
+
+
+### 3. Visualizations Using ggplot2
+
+```{r}
+library(ggplot2)
+ggplot(mtcars, aes(x = mpg)) +
+  geom_histogram(binwidth = 2, fill = "blue", color = "black") +
+  labs(title = "Histogram of MPG", x = "Miles per Gallon", y = "Frequency") +
+  theme_minimal()
+
+
+```
+### b. Boxplot: MPG by Number of Cylinders
+```{r}
+ggplot(mtcars, aes(x = cyl, y = mpg, fill = factor(cyl))) +
+  geom_boxplot() +
+  labs(title = "MPG by Number of Cylinders", x = "Cylinders", y = "Miles per Gallon") +
+  theme_minimal()
+
+```
+### d. Bar Chart: Frequency of Cars by Number of Gears
+```{r}
+ggplot(mtcars, aes(x = factor(gear), fill = factor(gear))) +
+  geom_bar() +
+  labs(title = "Frequency of Cars by Number of Gears", x = "Number of Gears", y = "Count") +
+  theme_minimal()
+
+```
+### e. Scatter Plot: Relationship between Weight and MPG
+```{r}
+ggplot(data = mtcars, aes(x = wt, y = mpg)) +
+  geom_point(color = "blue", size = 5) +
+  labs(title = "Scatter Plot of Weight vs MPG", x = "Weight (1000 lbs)", y = "Miles per Gallon") +
+  theme_minimal()
+
+```
+```{r}
+
+
+
+```
+
+### Hands-on Exercises
+Exercise 1: Create a histogram and boxplot using the iris dataset to explore sepal length.
+Exercise 2: Use ggplot2 to create a scatter plot of horsepower vs miles per gallon in the mtcars dataset and color points based on transmission type.

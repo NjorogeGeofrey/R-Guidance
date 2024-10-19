@@ -1,0 +1,137 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+### 1. Descriptive Statistics
+Descriptive statistics summarize the main features of a dataset. Key measures include:
+
+Mean: The average value.
+Median: The middle value.
+Standard deviation: The spread of data around the mean.
+Range: The difference between the maximum and minimum values.
+Example (Real World Application)
+Descriptive statistics are essential in fields like marketing. For instance, a company might want to describe the average spending of customers or the variability in purchase amounts.
+
+```{r}
+# Load the dataset
+data(mtcars)
+
+# Summary statistics
+summary(mtcars)
+
+# Mean, Median, and Standard Deviation for Miles per Gallon (mpg)
+mean(mtcars$mpg)
+median(mtcars$mpg)
+sd(mtcars$mpg)
+
+# Range of mpg
+range(mtcars$mpg)
+
+```
+
+Interpretation
+The summary() function gives a quick look at the dataset: min, max, mean, and quartiles. The mean and median for mpg help identify central tendency, while the standard deviation shows variability.
+
+### 2. T-Tests
+T-tests compare means between two groups to determine if they are statistically different.
+
+One-sample T-test: Compares the mean of a single group to a known value.
+Two-sample T-test: Compares the means of two independent groups.
+Paired T-test: Compares means from the same group at different times.
+Example (Real World Application)
+In clinical trials, researchers might compare the effectiveness of a new drug vs. a placebo using a T-test.
+
+```{r}
+# Check structure of mtcars dataset
+str(mtcars)
+
+t.test(mtcars$mpg, mu = 20)
+
+# Perform Two-sample T-test
+t.test(mpg ~ am, data = mtcars)
+
+# Paired T-test (if we had paired data, for example, pre and post treatment results)
+# t.test(pre_data, post_data, paired = TRUsuE)
+
+```
+
+Interpretation
+The p-value from the T-test tells us if the difference in mpg between automatic and manual transmission cars is statistically significant. A p-value < 0.05 indicates significant differences.
+
+
+### 3. ANOVA (Analysis of Variance)
+ANOVA is used to compare the means of more than two groups. It helps in determining whether there is a statistically significant difference between group means.
+
+Example (Real World Application)
+ANOVA is often used in agriculture to compare the effectiveness of different fertilizers on crop yield.
+```{r}
+# Load the iris dataset
+data(iris)
+
+# Perform ANOVA
+anova_result <- aov(Sepal.Length ~ Species, data = iris)
+summary(anova_result)
+
+# Post-hoc test if ANOVA is significant
+TukeyHSD(anova_result)
+
+```
+Interpretation
+The output of the ANOVA test tells us if there are differences between the means of sepal lengths for different species. If the p-value is less than 0.05, it indicates significant differences. The post-hoc Tukey test shows which specific groups differ.
+
+### 4. Correlation
+Correlation measures the strength and direction of a relationship between two variables.
+
+Positive correlation: As one variable increases, so does the other.
+Negative correlation: As one variable increases, the other decreases.
+Example (Real World Application)
+In finance, correlation is used to assess the relationship between the stock prices of two companies.
+```{r}
+# Compute correlation
+cor.test(mtcars$mpg, mtcars$hp)
+
+
+# Visualize correlation
+plot(mtcars$mpg, mtcars$hp, main = "Correlation between MPG and Horsepower",
+     xlab = "Miles per Gallon", ylab = "Horsepower", pch = 19)
+abline(lm(mpg ~ hp, data = mtcars), col = "blue")
+
+```
+
+Interpretation
+The correlation coefficient (between -1 and 1) indicates the strength and direction of the relationship between mpg and hp. A negative value close to -1 would indicate that as horsepower increases, miles per gallon decreases (which makes sense for cars).
+
+### 5. Chi-Square Test
+The Chi-Square test is used to test the relationship between categorical variables. There are two main types:
+
+Chi-Square Goodness of Fit Test: Tests if the observed frequencies of a categorical variable match expected frequencies.
+Chi-Square Test of Independence: Tests if there is an association between two categorical variables.
+Example (Real World Application)
+In marketing, a company might want to know if customer preference (buying or not buying a product) is independent of their gender.
+```{r}
+# Convert gear and cyl to factors
+mtcars$gear <- as.factor(mtcars$gear)
+mtcars$cyl <- as.factor(mtcars$cyl)
+
+# Create a contingency table
+table_data <- table(mtcars$gear, mtcars$cyl)
+table_data
+# Perform Chi-Square Test of Independence
+chisq.test(table_data)
+
+```
+
+Interpretation
+The Chi-Square test statistic will give us a p-value.
+If the p-value is less than 0.05, we reject the null hypothesis and conclude that there is an association between the two categorical variables (gear and cyl).
+If the p-value is greater than 0.05, we fail to reject the null hypothesis, suggesting no significant association between gear and cyl.
+
+### Famous Real-World Example of Chi-Square Test
+* Chi-Square Test of Independence: In a famous 1960s study, scientists used a Chi-Square test to determine whether smoking was independent of lung cancer occurrence. The results indicated a significant relationship between smoking and lung cancer, greatly influencing public health policies.
+
+* T-Test Example: In the famous 1908 "Student's t-test" experiment by William Sealy Gosset, he developed the T-test while working at Guinness Brewery to compare barley yields.
+
+* ANOVA Example: The classic experiment by Ronald Fisher in 1920 used ANOVA to determine if different types of fertilizers had varying effects on crop growth.
+
+* Correlation Example: The Pearson correlation coefficient was applied by Karl Pearson to study the relationship between heights of fathers and their sons.
+

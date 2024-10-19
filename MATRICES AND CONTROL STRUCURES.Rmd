@@ -1,0 +1,203 @@
+---
+title: "Matrices"
+output:
+  html_notebook: default
+---
+
+Matrices.
+What is a matrix?
+When a vector is introduced with row and column i.e. a dimension attribute, it becomes a matrix. A matrix is represented by set of rows and columns. It is a 2 dimensional data structure. 
+
+
+Creating a matrix in R.
+```{r}
+# Creating a matrix. Let’s create a matrix of 3 rows and 2 columns
+my_matrix = matrix(1:9, nrow=3, ncol=3)
+
+# matrix() this function is used to create a matrix in R
+# 1:9 creates a vector with the numbers from 1 to 9
+# nrow = 3, Clarifies that the matrix should have 3 rows
+# ncol = 3, Clarifies that the matrix should have 3 columns
+```
+
+Accessing Elements in a matrix
+```{r}
+# Accessing elements in a matrix
+# So to accessing the elements we need to specify the row and column of interest
+# Now let us access the first row and the third column
+my_matrix[1, 3]
+# The value 1 specifies the row we want 
+# The value 3 specifies the column we want 
+
+my_matrix[1, ]
+# So in this example we just want to access only the first row of the matrix.
+
+my_matrix[, 2] #or
+my_matrix[2]
+# Here we are accessing the second column of the matrix 
+```
+Checking the dimensions, attributes and class of a matrix
+```{r}
+# Checking the dimensions of a matrix (the number of rows and columns of a matrix)
+dim(my_matrix)
+
+# Checking the attributes of a matrx (basically the  dimensions)
+attributes(my_matrix)
+
+# Checking the class of a matrix
+class(my_matrix)
+```
+
+Converting Vectors to Matrix
+```{r}
+# Creating an Age vector the converting it to matrix
+age = c(23, 44, 15, 12, 31, 16)
+
+# Converting a matrix to a vector by specifying the dimensions of the matrix
+dim(age) <- c(2,3)
+
+# Checking the class to see if it is a matrix
+class(age)
+```
+
+Mathematical Operations in Matrices
+```{r}
+## Mathematical oparations in matrices
+matrix_b = matrix(10:18, nrow = 3)
+
+# Summing of matrices
+my_matrix + matrix_b
+
+# Multiplication of matrices
+my_matrix %*% matrix_b
+
+# Determinant of matrices
+det(my_matrix)
+
+# Transpose of a matrix
+t(my_matrix)
+
+# Inverse of matrix
+# Let us create a new matrix
+a1 <- c(3, 2, 5) 
+a2 <- c(2, 3, 2) 
+a3 <- c(5, 2, 4) 
+
+new_matrix = matrix(c(a1, a2, a3), nrow = 3)  
+solve(new_matrix)
+```
+
+
+
+Data Frames
+What is a data frame?
+This is the most commonly used member of data types family. It is used to store tabular data. It is different from matrix. In a matrix, every element must have same class. But, in a data frame, you can put list of vectors containing different classes. 
+```{r}
+# Creating a dataframe
+df = data.frame(name = c("ash","jane","paul","mark"), score = c(67,56,87,91))
+
+# View a data frame
+df
+print(df)
+View(df)
+
+# Checking the dimensions , structure and attributes of a data frame
+dim(df)
+attributes(df)
+str(df)
+
+```
+
+More on Data Frames
+```{r}
+# Creating a simple data frame with students' names, ages, and marks
+names = c("Brayo", "Gaturu", "Oliver", "Victor", "Elli")  # A vector of student names
+Age = c(21, 80, 24, 20, 18)  # A vector of ages
+Marks = c('A', 'B', 'C', 'D', 'A')  # A vector of marks
+
+# Creating a data frame from the vectors
+data = data.frame(names, Age, Marks)
+
+
+# Creating another data frame in a single step, same as the one above
+df = data.frame(names = c("Brayo", "Gaturu", "Oliver", "Victor", "Elli"),
+                Age = c(21, 80, 24, 20, 18),
+                Marks = c('A', 'B', 'C', 'D', 'A'))
+
+
+```
+
+Accessing specific columns and elements in the data frame
+```{r}
+
+data[1, 2]  # Retrieves the value in the 1st row and 2nd column (age of the 1st student)
+
+# Accessing a range of rows using index numbers
+data[1:3]  # Retrieves the first 3 rows of the data frame
+
+# Accessing the first 2 rows of the data frame
+data[1:2]
+
+# Accessing columns using the `$` operator
+data$Age  # Retrieves the 'Age' column
+data$Marks  # Retrieves the 'Marks' column
+data$names  # Retrieves the 'names' column
+
+# Adding a new column 'Gender' to the data frame
+data$Gender = c("Male", "Female", "Male", "Female", "Male")
+```
+
+Data frames operations
+```{r}
+# Modifying values in specific cells in the data frame
+data[1, 4:5] = 'NA'  # Assigning 'NA' to the 1st row and 4th, 5th columns (Gender and Marks)
+
+
+# Removing the 5th column from the data frame
+data = data[, -5]  # The '-5' means removing the 5th column
+data  # Displaying the updated data frame
+
+# Accessing a specific column by its name using square brackets
+data[,"names"]  # Retrieves the 'names' column
+
+```
+
+Working with actual Data frames
+```{r}
+# Loading built-in data sets in R
+data = datasets::women  # Loading the 'women' data set
+class(data)  # Checking the class (type) of the data set
+str(data)  # Checking the structure of the data set
+head(data)  # Displaying the first 6 rows of the data set
+tail(data)  # Displaying the last 6 rows of the data set
+
+# Working with another built-in data set 'ability.cov'
+data_2 = datasets::ability.cov  # Loading the 'ability.cov' data set
+class(data_2)  # Checking the class of the data set
+head(data_2)  # Displaying the first few rows of the data set
+View(data_2)  # Viewing the data set in RStudio
+```
+
+
+More
+```{r}
+
+# Converting the 'ability.cov' dataset to a data frame
+data_2 = as.data.frame(data_2)
+data_2  # Displaying the converted data frame
+
+# Working with the Titanic dataset
+DATA = datasets::Titanic  # Loading the 'Titanic' dataset
+class(DATA)  # Checking the class of the dataset
+
+# Converting the Titanic dataset to a data frame
+DATA = as.data.frame(DATA)
+DATA  # Displaying the data frame
+
+# Accessing specific columns in a data frame
+DATASET$Survived  # Accessing the 'Survived' column
+DATASET$Age  # Accessing the 'Age' column
+DATASET[, 'Age']  # Accessing the 'Age' column using square brackets
+
+```
+

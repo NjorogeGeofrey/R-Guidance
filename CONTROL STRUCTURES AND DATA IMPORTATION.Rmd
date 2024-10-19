@@ -1,0 +1,96 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Control Structures in R
+A control structure ‘controls’ the flow of code / commands written inside a function. A function is a set of multiple commands written to automate a repetitive coding task.
+
+For example: You have 10 data sets. You want to find the mean of ‘Age’ column present in every data set. This can be done in 2 ways: either you write the code to compute mean 10 times or you simply create a function and pass the data set to it
+
+
+if, else – This structure is used to test a condition. Below is the syntax:
+```{r}
+if (){
+         ##do something
+} else {
+         ##do something
+}
+```
+
+Example 1
+```{r}
+
+weather = "rainy"
+if (weather == "rainy") {
+  print("Take an umbrella!")
+} else {
+  print("No need for an umbrella!")
+}
+```
+
+Example 2
+```{r}
+#initialize a variable
+N = 10
+
+#check if this variable * 5 is > 40
+if (N * 5 > 40){
+       print("This is easy!")
+} else {
+       print ("It's not easy!")
+}
+```
+
+
+for – This structure is used when a loop is to be executed fixed number of times. It is commonly used for iterating over the elements of an object (list, vector). 
+The syntax
+```{r}
+for (<search condition>){
+          #do something
+}
+```
+
+Example 1
+```{r}
+#initialize a vector
+y = c(99,45,34,65,76,23)
+
+#print the first 4 numbers of this vector
+for(i in 1:4){
+     print (y[i])
+}
+```
+
+Example 2
+```{r}
+# For loop example
+numbers <- 1:5
+for (i in numbers) {
+  print(i^2) # Prints the square of each number
+}
+```
+
+
+while – It begins by testing a condition, and executes only if the condition is found to be true. Once the loop is executed, the condition is tested again. Hence, it’s necessary to alter the condition such that the loop doesn’t go infinity. 
+The syntax:
+```{r}
+#initialize a condition
+Age <- 12
+
+#check if age is less than 17
+while(Age < 17){
+         print(Age)
+         Age <- Age + 1 #Once the loop is executed, this code breaks the loop
+}
+```
+
+Example
+```{r}
+# While loop example
+counter <- 1
+while (counter <= 5) {
+  print(paste("Counter is at:", counter))
+  counter <- counter + 1
+}
+```

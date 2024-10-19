@@ -1,0 +1,196 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+## 1. Introduction to Data Cleaning in R (30 minutes)
+
+
+### a. Why Do We Need Data Cleaning? 
+* Explanation: Data collected from various sources is often messy and needs to be cleaned to ensure accurate analysis. This includes handling missing values, correcting data types, removing duplicates, etc.
+* Key Point: Data cleaning is the foundation of any reliable analysis.
+
+### b. What Are Missing Values? 
+* Explanation: Missing values occur when no data is available for some variables. This can cause issues in analysis.
+
+```{r}
+library(tidyverse)
+
+# Load dataset with missing values
+data("airquality")  # Pre-installed dataset in R
+head(airquality)  # View first few rows of the dataset
+glimpse(airquality)
+str(airquality)
+```
+
+### c. Checking Missing Values 
+* Explanation: Before cleaning, it's important to check how much of the data is missing.
+```{r}
+# Check for missing values in each column
+colSums(is.na(airquality))
+
+# Checking missing values for the whole data
+table(is.na(airquality))
+
+# Checking missing values for the whole data
+summary(airquality)
+
+
+```
+
+### d. Putting Data in the Correct Format 
+* Explanation: Variables may need to be converted into proper data types such as factors, numeric, etc.
+```{r}
+# Convert 'Month' column to a factor
+airquality$Month <- as.factor(airquality$Month)
+str(airquality)  # Check structure of the dataset
+
+data("starwars")
+starwars$gender <- factor(starwars$gender,
+                          levels = c("masculine", "feminine"))
+
+```
+
+### e. Checking for Outliers 
+* Explanation: Outliers can skew the results of an analysis and might need to be handled
+```{r}
+# Simple visualization to spot outliers
+boxplot(airquality$Ozone, main = "Ozone Levels Boxplot")
+```
+The data two
+### f. Handling Missing Values
+* Explanation: There are different ways to handle missing values:
+* Remove rows with missing values.
+* Impute missing values (fill in with mean, median, or a constant).
+```{r}
+# Option 1: Remove rows with missing values
+airquality_clean <- na.omit(airquality)
+
+# Option 2: Impute missing values with the mean
+airquality$Ozone[is.na(airquality$Ozone)] <- mean(airquality$Ozone, na.rm = TRUE)
+head(airquality)
+
+
+airquality$Ozone <- ifelse(is.na(airquality$Ozone), 
+                           median(airquality$Ozone, na.rm = TRUE),
+                           airquality$Ozone)
+```
+
+### g. Handling Duplicates 
+* Explanation: Duplicate entries can distort analysis and need to be removed.
+
+```{r}
+# Check for duplicates
+duplicated_rows <- duplicated(airquality)
+sum(duplicated_rows)
+
+# Remove duplicates
+airquality_clean <- airquality[!duplicated(airquality), ]
+
+
+# Or
+airquality_clean <- airquality %>% 
+  distinct()
+```
+
+### h. Cleaning Column Names
+* Explanation: Column names should be clear and consistent.
+```{r}
+# Use the janitor package to clean column names
+library(janitor)
+airquality_clean <- clean_names(airquality)
+head(airquality_clean)
+
+```
+########################-------- PRACTICE --------------------######################
+
+
+
+
+## Data Manipulation
+### 2. Introduction to Data Manipulation in R
+Selecting Variables in tidyverse
+```{r}
+data = airquality %>% 
+  select(Ozone, ,Solar.R, Wind)
+```
+
+
+Renaming variables
+```{r}
+# Rename columns in airquality dataset
+airquality_clean <- airquality %>%
+  rename(Temperature = temp, WindSpeed = wind)
+
+head(airquality_clean)
+
+```
+
+Relocating variables
+```{r}
+# Reorder columns using relocate()
+
+airquality_clean %>%
+  relocate(Day, Ozone)
+```
+
+### Filtering Data
+```{r}
+# Filter data for specific conditions
+high_temp <- airquality %>% filter(Temp > 80)  # Filter for temperatures greater than 80
+head(high_temp)
+
+data("starwars")
+# Filtering where species were Human and Droid
+
+filtered <- starwars %>% 
+  filter(species %in% c("Human", "Droid"))
+
+# Filtering using subset
+subset(starwars, species %in% c("Human", "Droid"))
+
+```
+
+### Converting Data from Long to Wide Format 
+* Explanation: Data can exist in long or wide format, and you may need to switch between the two.
+```{r}
+long_airquality <- pivot_longer(airquality, cols = c(Ozone, Temp, Wind), 
+                                names_to = "Variable", values_to = "Value")
+head(long_airquality)
+
+# Pivot wider example (from long to wide format)
+wide_airquality <- pivot_wider(long_airquality, names_from = "Variable", values_from = "Value")
+head(wide_airquality)
+
+```
+
+
+
+### d. Aggregating Data (10 minutes)
+* Explanation: Aggregating means summarizing data by groups, such as calculating the mean for different months.
+```{r}
+# Summarize data by Month (calculate the average for each variable)
+airquality_summary <- airquality %>%
+  group_by(Month) %>%
+  summarize(mean_ozone = mean(Ozone, na.rm = TRUE),
+            mean_temp = mean(Temperature, na.rm = TRUE),
+            mean_wind = mean(WindSpeed, na.rm = TRUE))
+airquality_summary
+
+```
+
+
+### Additional Manipulation Techniques
+* Explanation: Other useful techniques include sorting and mutating (creating new columns).
+```{r}
+# Sorting data by temperature
+sorted_data <- airquality_clean %>% arrange(desc(Temperature))
+
+# Creating a new column
+airquality_clean <- airquality_clean %>% mutate(Ozone_Level = ifelse(Ozone > 100, "High", "Low"))
+
+```
+
+
+
+
